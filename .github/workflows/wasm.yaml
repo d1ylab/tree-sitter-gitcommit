@@ -13,8 +13,29 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
-      - name: Build grammar
-        run: |
-          npm install --save-dev tree-sitter-cli
-          ./node_modules/.bin/tree-sitter generate
-          ./node_modules/.bin/tree-sitter build-wasm
+      - name: Install tree-sitter
+        uses: tree-sitter/setup-action@v2
+      - run: |
+          tree-sitter generate
+          tree-sitter build --wasm
+      # - name: Build grammar
+      #   run: |
+      #     npm install --save-dev tree-sitter-cli
+      #     ./node_modules/.bin/tree-sitter generate
+      #     ./node_modules/.bin/tree-sitter build-wasm
+      - name: Create Pre-release
+        id: create_release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: 0.0.1
+          draft: false
+          prerelease: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload Result
+        uses: softprops/action-gh-release@v2
+        with:
+          files: path/to/your/result-file.txt
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
