@@ -11,5 +11,6 @@ jobs:
         uses: actions/checkout@v4
       - name: Set up tree-sitter
         uses: tree-sitter/setup-action@v2
+      - name: Run test
         run: |
-          tree-sitter build --wasm --output gitcommit.wasm --reuse-allocator
+          tree-sitter build --wasm --output gitcommit.wasm --reuse-allocator .
