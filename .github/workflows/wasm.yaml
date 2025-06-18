@@ -7,10 +7,14 @@ jobs:
     name: Build wasm
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
+      - name: Checkout code
         uses: actions/checkout@v4
-      - name: Set up tree-sitter
-        uses: tree-sitter/setup-action@v2
-      - name: Run test
+      - name: Setup node and npm
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Build grammar
         run: |
-          tree-sitter build --wasm --output gitcommit.wasm --reuse-allocator .
+          npm install --save-dev tree-sitter-cli
+          ./node_modules/.bin/tree-sitter generate
+          ./node_modules/.bin/tree-sitter build --wasm --output gitcommit.wasm --reuse-allocator .
