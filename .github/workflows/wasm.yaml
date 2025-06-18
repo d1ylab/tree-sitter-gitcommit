@@ -1,0 +1,15 @@
+on:
+  push:
+    branches: [main]
+
+jobs:
+  build:
+    name: Build wasm
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Set up tree-sitter
+        uses: tree-sitter/setup-action@v2
+        run: |
+          tree-sitter build --wasm --output gitcommit.wasm --reuse-allocator
